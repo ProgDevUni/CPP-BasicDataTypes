@@ -20,8 +20,7 @@ namespace mystd {
     void HashTable<T>::insertWithoutResize(const T& value) {
         for (int i = 0; i < capacity; ++i) {
             int q = hash(value, i);
-            if (buckets[q].slot == StatusSlot::Empty || 
-                buckets[q].slot == StatusSlot::Deleted) {
+            if (buckets[q].slot == StatusSlot::Empty || buckets[q].slot == StatusSlot::Deleted) {
                 buckets[q].value = value;
                 buckets[q].slot = StatusSlot::Occupied;
                 return;
@@ -43,7 +42,7 @@ namespace mystd {
         capacity = newCapacity;
         buckets = newBuckets;
 
-        for (int i=0;i<capacity;i++) {
+        for (int i=0;i<oldCapacity;i++) {
             if (oldBuckets[i].slot == StatusSlot::Occupied) {
                 insertWithoutResize(oldBuckets[i].value);
             }
@@ -69,28 +68,24 @@ namespace mystd {
 
     template <typename T>
     void HashTable<T>::remove(const T& value) {
-        int i=0;
-        std::size_t q = hash(value, i);
-        while (buckets[q].slot != StatusSlot::Empty) {
+        for (int i=0;i<capacity;i++) {
+            std::size_t q = hash(value, i);
             if (buckets[q].value == value) {
                 buckets[q].value = T();
-                buckets[q].slot == StatusSlot::Deleted;
+                buckets[q].slot = StatusSlot::Deleted;
                 return;
             }
-            i++;
         }
     }
 
     template <typename T>
     bool HashTable<T>::find(const T& value, T* result) {
-        int i=0;
-        std::size_t q = hash(value, i);
-        while (buckets[q].slot != StatusSlot::Empty) {
+        for (int i=0;i<capacity;i++) {
+            std::size_t q = hash(value, i);
             if (buckets[q].value == value) {
                 *result = buckets[q].value;
                 return true;
             }
-            i++;
         }
         return false;
     }
@@ -119,3 +114,74 @@ namespace mystd {
         std::cout<<std::endl;
     }
 }
+
+/*
+
+mystd::HashTable<int> table(4);
+    table.insert(1);
+    table.insert(2);
+    table.insert(3);
+    table.insert(4);
+    table.insert(5);
+    table.insert(6);
+
+    std::cout << "SIZE: " << table.size() << std::endl;
+    std::cout << "IS EMPTY: " << (table.empty() ? "YES" : "NO") << std::endl;
+
+    std::cout << "====FIND TEST===" << std::endl;
+    int res;
+
+    std::cout << "FIND FOR 30     ";
+    if (table.find(30, &res)) {
+        std::cout<<"\t"<<res<<std::endl;
+    }
+    else{
+        std::cout<<"\tNO"<<std::endl;
+    }
+
+    std::cout << "FIND FOR 20     ";
+    if (table.find(20, &res)) {
+        std::cout<<"\t"<<res<<std::endl;
+    }
+    else{
+        std::cout<<"\tNO"<<std::endl;
+    }
+
+    std::cout << "FIND FOR 1     ";
+    if (table.find(1, &res)) {
+        std::cout<<"\t"<<res<<std::endl;
+    }
+    else{
+        std::cout<<"\tNO"<<std::endl;
+    }
+
+    std::cout << "FIND FOR 2     ";
+    if (table.find(2, &res)) {
+        std::cout<<"\t"<<res<<std::endl;
+    }
+    else{
+        std::cout<<"\tNO"<<std::endl;
+    }
+
+
+    std::cout<<"=====REMOVE TEST====" <<std::endl;
+    table.remove(1);
+    table.remove(5);
+    std::cout << "SIZE: " << table.size() << std::endl;
+    std::cout << "IS EMPTY: " << (table.empty() ? "YES" : "NO") << std::endl;
+    
+    std::cout<<"=====REINSERT TEST====" <<std::endl;
+    table.insert(30);
+    table.insert(40);
+    std::cout << "SIZE: " << table.size() << std::endl;
+    std::cout << "IS EMPTY: " << (table.empty() ? "YES" : "NO") << std::endl;
+
+    std::cout<<"===REMOVE ALL===" <<std::endl;
+    table.remove(40);
+    table.remove(30);
+    table.remove(2);
+    table.remove(3);
+    table.remove(4);
+    table.remove(6);
+    std::cout << "IS EMPTY: " << (table.empty() ? "YES" : "NO") << std::endl;
+*/

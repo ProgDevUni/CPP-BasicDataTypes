@@ -1,16 +1,26 @@
 #include <iostream>
 
-#include "hashtable.hpp"
+#include "bst.hpp"
+
+void printNode(int value) {
+    std::cout << value << " ";
+}
 
 int main() {
-    mystd::HashTable<int> table(3);
-    table.insert(1);
-    table.insert(2);
-    table.insert(3);
-    table.insert(4);
-    table.insert(5);
-    table.insert(6);
+    mystd::BSTree<int> tree;
+    tree.insert(1);
+    tree.insert(9);
+    tree.insert(5);
+    tree.insert(11);
+    tree.insert(3);
+    tree.insert(4);
+    tree.insert(6);
 
-    table.printTable();
+    tree.remove(5);
+    tree.insert(7);
+
+    tree.inorder(printNode);
+    std::cout << "\n=====\n";
+    tree.preorder(printNode);
     return 0;
 }
