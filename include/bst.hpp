@@ -18,6 +18,8 @@ namespace mystd {
     class BSTree{
         private:
             Node<T>* root = nullptr;
+
+            void clear(Node<T>* node);
         
         public:
             void insert(const T& value);
@@ -33,6 +35,10 @@ namespace mystd {
 
             T min();
             T max();
+
+            ~BSTree() {
+                clear(root);
+            }
     };
 }
 

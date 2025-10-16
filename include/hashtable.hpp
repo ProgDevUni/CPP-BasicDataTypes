@@ -43,6 +43,10 @@ namespace mystd {
             bool empty();
 
             void printTable();
+
+            ~HashTable() {
+                delete[] buckets;
+            }
     };
 }
 

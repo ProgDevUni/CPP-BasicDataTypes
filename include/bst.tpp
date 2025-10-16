@@ -156,4 +156,12 @@ namespace mystd {
     void BSTree<T>::postrder(const std::function<void (const T&)>& visit) const {
         postrderNode(root, visit);
     }
+
+    template <typename T>
+    void BSTree<T>::clear(Node<T>* node) {
+        if (!node) return;
+        clear(node->left);
+        clear(node->right);
+        delete node;
+    }
 }
