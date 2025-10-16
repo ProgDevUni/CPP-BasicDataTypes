@@ -52,10 +52,10 @@ namespace mystd {
             if (node == nullptr) return nullptr;
 
             if (node->value < value) {
-                node = removeNode(node->right, value);
+                node->right = removeNode(node->right, value);
             }
             else if (node->value > value) {
-                node = removeNode(node->left, value);
+                node->left = removeNode(node->left, value);
             }
             else {
                 if (node->left == nullptr && node->right == nullptr) {
